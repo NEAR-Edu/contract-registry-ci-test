@@ -1,14 +1,26 @@
 version: 2.1
 
 jobs:
-  clone-repo:
+  clone-and-build-repo:
     docker:
       - image: cimg/rust:1.58
     steps:
       - checkout
       - run: git clone $(<repo) source
+      - name: compile source
+        run: |
+          cd source
+          cargo build --target wasm32-unknown-unknown --release
+      - name: store artifacts
+        run: |
+          rm -rf /tmp/artifacts
+          mkdir -p /tmp/artifacts
+          wasm_path="$(find ./target/wasm32-unknown-unknown/release/ -maxdepth 1 -name "*.wasm")"
+          cp $wasm_path /tmp/artifacts/out.wasm
+      - store_artifacts:
+          path: /tmp/artifacts/out.wasm
 
 workflows:
   build:
     jobs:
-      - clone-repo
+      - clone-and-build-repo
