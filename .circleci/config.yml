@@ -7,12 +7,10 @@ jobs:
     steps:
       - checkout
       - run: git clone $(<repo) source
-      - name: compile source
-        run: |
+      - run: |
           cd source
           cargo build --target wasm32-unknown-unknown --release
-      - name: store artifacts
-        run: |
+      - run: |
           rm -rf /tmp/artifacts
           mkdir -p /tmp/artifacts
           wasm_path="$(find ./target/wasm32-unknown-unknown/release/ -maxdepth 1 -name "*.wasm")"
