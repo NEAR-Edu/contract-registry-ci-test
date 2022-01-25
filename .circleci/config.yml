@@ -9,6 +9,7 @@ jobs:
       - run: git clone $(<repo) source
       - run: |
           cd source
+          rustup target add wasm32-unknown-unknown
           cargo build --target wasm32-unknown-unknown --release
       - run: |
           rm -rf /tmp/artifacts
