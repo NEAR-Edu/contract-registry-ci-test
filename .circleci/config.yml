@@ -14,7 +14,7 @@ jobs:
       - run: |
           rm -rf /tmp/artifacts
           mkdir -p /tmp/artifacts
-          wasm_path="$(find ./target/wasm32-unknown-unknown/release/ -maxdepth 1 -name "*.wasm")"
+          wasm_path="$(find source/target/wasm32-unknown-unknown/release/ -maxdepth 1 -name "*.wasm")"
           cp $wasm_path /tmp/artifacts/out.wasm
       - store_artifacts:
           path: /tmp/artifacts/out.wasm
