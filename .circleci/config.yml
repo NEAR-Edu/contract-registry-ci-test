@@ -16,8 +16,11 @@ jobs:
           mkdir -p /tmp/artifacts
           wasm_path="$(find source/target/wasm32-unknown-unknown/release/ -maxdepth 1 -name "*.wasm")"
           cp $wasm_path /tmp/artifacts/out.wasm
+          cat repo > /tmp/artifacts/repo
+          git rev-parse --abbrev-ref HEAD > /tmp/artifacts/branch
+          git rev-parse --verify HEAD > /tmp/artifacts/commit-hash
       - store_artifacts:
-          path: /tmp/artifacts/out.wasm
+          path: /tmp/artifacts
 
 workflows:
   build:
