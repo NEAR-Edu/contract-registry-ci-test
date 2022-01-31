@@ -6,21 +6,32 @@ jobs:
       - image: cimg/rust:1.58
     steps:
       - checkout
-      - run: git clone $(<repo) source
+      - run: rustup target add wasm32-unknown-unknown
+      - run: git clone $(<./repo) source
       - run: |
           cd source
-          rustup target add wasm32-unknown-unknown
-          cargo build --target wasm32-unknown-unknown --release
+          rm -rf /tmp/artifacts/git
+          mkdir -p /tmp/artifacts/git
+          cp ./repo > /tmp/artifacts/git/repo
+          git remote get-url $(git remote show) > /tmp/artifacts/git/remote
+          git rev-parse --abbrev-ref HEAD > /tmp/artifacts/git/branch
+          git rev-parse --verify HEAD > /tmp/artifacts/git/commit-hash
+      - store_artifacts:
+          path: /tmp/artifacts/git
+          destination: git
+      - run: |
+          ls ~/.ssh
       - run: |
           rm -rf /tmp/artifacts
           mkdir -p /tmp/artifacts
-          wasm_path="$(find source/target/wasm32-unknown-unknown/release/ -maxdepth 1 -name "*.wasm")"
-          cp $wasm_path /tmp/artifacts/out.wasm
-          cat repo > /tmp/artifacts/repo
-          git rev-parse --abbrev-ref HEAD > /tmp/artifacts/branch
-          git rev-parse --verify HEAD > /tmp/artifacts/commit-hash
+      - run:
+          | # redirecting all output to /dev/null should allow no_output_timeout to timeout generally
+          cd "source/$(<./path)"
+          2>/dev/null 1>/dev/null ./near-verify.sh /tmp/artifacts/out.wasm
+        no_output_timeout: 5m
       - store_artifacts:
-          path: /tmp/artifacts
+          path: /tmp/artifacts/out.wasm
+          destination: out
 
 workflows:
   build:
