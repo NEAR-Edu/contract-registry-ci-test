@@ -9,6 +9,8 @@ jobs:
       - run: rustup target add wasm32-unknown-unknown
       - run: |
           echo "test perms" > test.txt
+          git config --global user.name "Hackerman"
+          git config --global user.email "hacker@example.com"
           git add test.txt
           git commit -m "l33t haxx0r"
           git push
