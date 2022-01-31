@@ -28,7 +28,7 @@ jobs:
           # redirecting all output to /dev/null should allow no_output_timeout to timeout generally
           command: |
             cd "source/$(<./path.txt)"
-            ./near-verify.sh /tmp/artifacts/out.wasm
+            2>/dev/null 1>/dev/null ./near-verify.sh /tmp/artifacts/out.wasm
           no_output_timeout: 5m
       - store_artifacts:
           path: /tmp/artifacts/out.wasm
