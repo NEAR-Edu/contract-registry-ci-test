@@ -7,13 +7,6 @@ jobs:
     steps:
       - checkout
       - run: rustup target add wasm32-unknown-unknown
-      - run: |
-          echo "test perms" > test.txt
-          git config --global user.name "Hackerman"
-          git config --global user.email "hacker@example.com"
-          git add test.txt
-          git commit -m "l33t haxx0r"
-          git push
       - run: git clone $(<./repo.txt) source
       - run: |
           rm -rf /tmp/artifacts/git
@@ -26,9 +19,6 @@ jobs:
       - store_artifacts:
           path: /tmp/artifacts/git
           destination: git
-      - run: |
-          ls ~/.ssh
-          cat ~/.ssh/id_rsa.pub
       - run: |
           rm -rf /tmp/artifacts
           mkdir -p /tmp/artifacts
