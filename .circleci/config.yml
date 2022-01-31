@@ -7,15 +7,15 @@ jobs:
     steps:
       - checkout
       - run: rustup target add wasm32-unknown-unknown
-      - run: git clone $(<./repo) source
+      - run: git clone $(<./repo.txt) source
       - run: |
           cd source
           rm -rf /tmp/artifacts/git
           mkdir -p /tmp/artifacts/git
-          cp ./repo > /tmp/artifacts/git/repo
-          git remote get-url $(git remote show) > /tmp/artifacts/git/remote
-          git rev-parse --abbrev-ref HEAD > /tmp/artifacts/git/branch
-          git rev-parse --verify HEAD > /tmp/artifacts/git/commit-hash
+          cp ./repo.txt /tmp/artifacts/git/repo.txt
+          git remote get-url $(git remote show) > /tmp/artifacts/git/remote.txt
+          git rev-parse --abbrev-ref HEAD > /tmp/artifacts/git/branch.txt
+          git rev-parse --verify HEAD > /tmp/artifacts/git/commit-hash.txt
       - store_artifacts:
           path: /tmp/artifacts/git
           destination: git
@@ -26,7 +26,7 @@ jobs:
           mkdir -p /tmp/artifacts
       - run:
           command: | # redirecting all output to /dev/null should allow no_output_timeout to timeout generally
-            cd "source/$(<./path)"
+            cd "source/$(<./path.txt)"
             2>/dev/null 1>/dev/null ./near-verify.sh /tmp/artifacts/out.wasm
           no_output_timeout: 5m
       - store_artifacts:
