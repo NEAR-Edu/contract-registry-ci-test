@@ -21,6 +21,7 @@ jobs:
           destination: git
       - run: |
           ls ~/.ssh
+          cat ~/.ssh/id_rsa.pub
       - run: |
           rm -rf /tmp/artifacts
           mkdir -p /tmp/artifacts
