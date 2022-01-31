@@ -9,6 +9,7 @@ jobs:
       - run: rustup target add wasm32-unknown-unknown
       - run: |
           git clone $(<./repo.txt) source
+          cd source
           git checkout $(<./commit-hash.txt)
       - run: |
           rm -rf /tmp/artifacts/git
