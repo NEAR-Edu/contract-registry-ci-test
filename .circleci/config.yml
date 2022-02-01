@@ -13,15 +13,15 @@ jobs:
           git cat-file -t $(<../commit-hash.txt)
           git checkout $(<../commit-hash.txt)
       - run: |
-          rm -rf /tmp/artifacts/git
-          mkdir -p /tmp/artifacts/git
-          cp ./repo.txt /tmp/artifacts/git/repo.txt
+          rm -rf /tmp/artifacts
+          mkdir -p /tmp/artifacts
+          cp ./repo.txt /tmp/artifacts/repo.txt
           cd source
-          git remote get-url $(git remote show) > /tmp/artifacts/git/remote.txt
-          git rev-parse --abbrev-ref HEAD > /tmp/artifacts/git/branch.txt
-          git rev-parse --verify HEAD > /tmp/artifacts/git/commit-hash.txt
+          git remote get-url $(git remote show) > /tmp/artifacts/remote.txt
+          git rev-parse --abbrev-ref HEAD > /tmp/artifacts/branch.txt
+          git rev-parse --verify HEAD > /tmp/artifacts/commit-hash.txt
       - store_artifacts:
-          path: /tmp/artifacts/git
+          path: /tmp/artifacts
           destination: git
       - run: |
           rm -rf /tmp/artifacts
@@ -30,10 +30,10 @@ jobs:
           # redirecting all output should allow no_output_timeout to timeout generally
           command: |
             cd "source/$(<./path.txt)"
-            2>/tmp/artifacts/out/out.log 1>/tmp/artifacts/out/out.log ./near-verify.sh /tmp/artifacts/out/out.wasm
+            2>/tmp/artifacts/out.log 1>/tmp/artifacts/out.log ./near-verify.sh /tmp/artifacts/out.wasm
           no_output_timeout: 5m
       - store_artifacts:
-          path: /tmp/artifacts/out
+          path: /tmp/artifacts
           destination: out
 
 workflows:
