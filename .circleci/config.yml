@@ -10,6 +10,7 @@ jobs:
       - run: |
           git clone $(<./repo.txt) source
           cd source
+          git cat-file -t $(<../commit-hash.txt)
           git checkout $(<../commit-hash.txt)
       - run: |
           rm -rf /tmp/artifacts/git
@@ -26,13 +27,13 @@ jobs:
           rm -rf /tmp/artifacts
           mkdir -p /tmp/artifacts
       - run:
-          # redirecting all output to /dev/null should allow no_output_timeout to timeout generally
+          # redirecting all output should allow no_output_timeout to timeout generally
           command: |
             cd "source/$(<./path.txt)"
-            2>/dev/null 1>/dev/null ./near-verify.sh /tmp/artifacts/out.wasm
+            2>/tmp/artifacts/out/out.log 1>/tmp/artifacts/out/out.log ./near-verify.sh /tmp/artifacts/out/out.wasm
           no_output_timeout: 5m
       - store_artifacts:
-          path: /tmp/artifacts/out.wasm
+          path: /tmp/artifacts/out
           destination: out
 
 workflows:
