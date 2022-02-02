@@ -10,8 +10,8 @@ jobs:
       - run: |
           git clone $(<./repo.txt) source
           cd source
-          git cat-file -t $(<../commit-hash.txt)
-          git checkout $(<../commit-hash.txt)
+          git cat-file -t $(<../commit.txt)
+          git checkout $(<../commit.txt)
       - run: |
           rm -rf /tmp/artifacts
           mkdir -p /tmp/artifacts
@@ -19,7 +19,7 @@ jobs:
           cd source
           git remote get-url $(git remote show) > /tmp/artifacts/remote.txt
           git rev-parse --abbrev-ref HEAD > /tmp/artifacts/branch.txt
-          git rev-parse --verify HEAD > /tmp/artifacts/commit-hash.txt
+          git rev-parse --verify HEAD > /tmp/artifacts/commit.txt
       - store_artifacts:
           path: /tmp/artifacts
           destination: git
