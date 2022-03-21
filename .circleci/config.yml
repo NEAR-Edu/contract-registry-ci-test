@@ -8,16 +8,16 @@ jobs:
       - checkout
       - run: rustup target add wasm32-unknown-unknown
       - run: |
-          git clone $(<./repo.txt) source
+          git clone "$(<./repo.txt)" source
           cd source
-          git cat-file -t $(<../commit.txt)
-          git checkout $(<../commit.txt)
+          git cat-file -t "$(<../commit.txt)"
+          git checkout "$(<../commit.txt)"
       - run: |
           rm -rf /tmp/artifacts
           mkdir -p /tmp/artifacts
           cp ./repo.txt /tmp/artifacts/repo.txt
           cd source
-          git remote get-url $(git remote show) > /tmp/artifacts/remote.txt
+          git remote get-url "$(git remote show)" > /tmp/artifacts/remote.txt
           git rev-parse --abbrev-ref HEAD > /tmp/artifacts/branch.txt
           git rev-parse --verify HEAD > /tmp/artifacts/commit.txt
       - store_artifacts:
