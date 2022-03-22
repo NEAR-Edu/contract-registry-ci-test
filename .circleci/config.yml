@@ -10,8 +10,8 @@ jobs:
       - run: |
           git clone "$(<./repo.txt)" source
           cd source
-          git cat-file -t "$(<../commit.txt)"
-          git checkout "$(<../commit.txt)"
+          git cat-file -t "$(<../checkout.txt)"
+          git checkout "$(<../checkout.txt)"
       - run: |
           rm -rf /tmp/artifacts
           mkdir -p /tmp/artifacts
